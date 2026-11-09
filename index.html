@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZICO — Game Designer & QA Tester Portfolio. Beyond The Game." />
+  <meta name="keywords" content="Game Designer, Game QA, Portfolio, ZICO" />
+  <title>ZICO — BEYOND THE GAME</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       LOADING SCREEN
+  ══════════════════════════════════════ -->
+  <div id="loading-screen">
+    <canvas id="loader-particles"></canvas>
+    <div class="loader-content">
+      <div class="loader-wordmark">
+        <span class="loader-letter" data-letter="Z">Z</span>
+        <span class="loader-letter" data-letter="I">I</span>
+        <span class="loader-letter" data-letter="C">C</span>
+        <span class="loader-letter" data-letter="O">O</span>
+        <div class="loader-sweep"></div>
+      </div>
+      <p class="loader-status mono">INITIALIZING SYSTEM...</p>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="loader-bar-fill"></div>
+        </div>
+        <span class="loader-pct mono" id="loader-pct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       GLOBAL COSMIC STREAM CANVAS (Horizontal Flying Objects & Ambient Shards)
+  ══════════════════════════════════════ -->
+  <canvas id="cosmic-stream-canvas"></canvas>
+
+  <!-- ══════════════════════════════════════
+       SCROLL PROGRESS BAR
+  ══════════════════════════════════════ -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- ══════════════════════════════════════
+       CUSTOM CURSOR
+  ══════════════════════════════════════ -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="cursor-label"></div>
+
+  <!-- ══════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo" data-cursor-label="HOME">ZICO</a>
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active" data-section="hero">HOME</a></li>
+        <li><a href="#about" class="nav-link" data-section="about">ABOUT</a></li>
+        <li><a href="#expertise" class="nav-link" data-section="expertise">EXPERTISE</a></li>
+        <li><a href="#projects" class="nav-link" data-section="projects">PROJECTS</a></li>
+        <li><a href="#experience" class="nav-link" data-section="experience">EXPERIENCE</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact">CONTACT</a></li>
+      </ul>
+      <div class="nav-cv-dropdown" id="nav-cv-dropdown">
+        <button class="nav-cv-btn" data-cursor-label="DOWNLOAD" aria-haspopup="true" aria-expanded="false" id="nav-cv-btn">DOWNLOAD CV ▾</button>
+        <div class="nav-cv-menu" id="nav-cv-menu" role="menu">
+          <a href="cv/GAME DESIGNER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-Designer.pdf" class="nav-cv-option" role="menuitem" data-cursor-label="DOWNLOAD">
+            <span class="cv-opt-icon">🎮</span>
+            <span>
+              <span class="cv-opt-title">GAME DESIGNER</span>
+              <span class="cv-opt-sub mono">Game Designer Intern</span>
+            </span>
+          </a>
+          <a href="cv/GAME QA TESTER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-QA.pdf" class="nav-cv-option" role="menuitem" data-cursor-label="DOWNLOAD">
+            <span class="cv-opt-icon">🔍</span>
+            <span>
+              <span class="cv-opt-title">GAME QA TESTER</span>
+              <span class="cv-opt-sub mono">QA Tester</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu">
+    <button id="mobile-menu-close" aria-label="Close Menu">✕</button>
+    <ul>
+      <li><a href="#hero" class="mobile-link">HOME</a></li>
+      <li><a href="#about" class="mobile-link">ABOUT</a></li>
+      <li><a href="#expertise" class="mobile-link">EXPERTISE</a></li>
+      <li><a href="#projects" class="mobile-link">PROJECTS</a></li>
+      <li><a href="#experience" class="mobile-link">EXPERIENCE</a></li>
+      <li><a href="#contact" class="mobile-link">CONTACT</a></li>
+    </ul>
+    <div class="mobile-cv-group">
+      <a href="cv/GAME DESIGNER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-Designer.pdf" class="mobile-cv-btn">🎮 GAME DESIGNER CV</a>
+      <a href="cv/GAME QA TESTER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-QA.pdf" class="mobile-cv-btn mobile-cv-btn--alt">🔍 GAME QA CV</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════ -->
+  <section id="hero">
+    <canvas id="bg-particles"></canvas>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-noise-overlay"></div>
+    <div class="hero-ambient-canvas-wrap"><canvas id="hero-ambient"></canvas></div>
+
+    <div class="hero-inner">
+      <!-- LEFT -->
+      <div class="hero-left reveal-up">
+        <p class="hero-label mono">PERSONAL PORTFOLIO / 2026</p>
+        <h1 class="hero-headline">BEYOND<br/>THE GAME.</h1>
+        <p class="hero-sub">Understanding the systems behind every experience.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary magnetic" data-cursor-label="EXPLORE">EXPLORE MY WORK</a>
+          <div class="hero-cv-group">
+            <a href="cv/GAME DESIGNER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-Designer.pdf" class="btn-ghost magnetic" data-cursor-label="DOWNLOAD">🎮 GAME DESIGNER CV</a>
+            <a href="cv/GAME QA TESTER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-QA.pdf" class="btn-ghost magnetic btn-ghost--alt" data-cursor-label="DOWNLOAD">🔍 GAME QA CV</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER — Three.js Canvas -->
+      <div class="hero-center">
+        <canvas id="hero-3d"></canvas>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="hero-right reveal-up" style="animation-delay:0.3s">
+        <div class="hero-info-block">
+          <span class="hero-info-icon">📍</span>
+          <div>
+            <p class="hero-info-label mono">LOCATION</p>
+            <p class="hero-info-value">Ho Chi Minh City, Vietnam</p>
+          </div>
+        </div>
+        <div class="hero-info-block">
+          <span class="hero-info-icon">🎓</span>
+          <div>
+            <p class="hero-info-label mono">ROLE</p>
+            <p class="hero-info-value">Software Engineering Student</p>
+          </div>
+        </div>
+        <div class="hero-info-block">
+          <span class="hero-info-icon">✦</span>
+          <div>
+            <p class="hero-info-label mono">STATUS</p>
+            <p class="hero-info-value status-open">Open to Opportunities</p>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <div class="scroll-line"><div class="scroll-dot"></div></div>
+          <span class="mono scroll-text">SCROLL TO EXPLORE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ABOUT ME
+  ══════════════════════════════════════ -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-num mono">03</div>
+      <div class="about-grid">
+        <!-- Portrait Left -->
+        <div class="about-portrait-wrap reveal-up">
+          <div class="about-portrait" id="portrait-tilt">
+            <div class="portrait-inner">
+              <div class="portrait-gradient"></div>
+              <span class="portrait-name">ZICO</span>
+              <span class="portrait-tag mono">BEYOND THE GAME</span>
+            </div>
+          </div>
+        </div>
+        <!-- Text Right -->
+        <div class="about-text reveal-up" style="animation-delay:0.2s">
+          <h2 class="section-heading">THE PERSON BEHIND<br/>THE SYSTEMS.</h2>
+          <p class="about-desc">
+            I'm a Software Engineering student at Ho Chi Minh City University of Technology (HUTECH), combining a technical understanding of software systems with a strong interest in game development. My experience in software development and user acceptance testing has shaped the way I approach systems: understanding requirements, examining behavior, identifying inconsistencies, and evaluating how different components interact.
+          </p>
+          <p class="about-desc">
+            As a competitive FPS player, I'm particularly interested in gameplay mechanics, combat systems, tactical decision-making, and the relationship between game design and player experience.
+          </p>
+          <blockquote class="about-quote">
+            <span class="quote-mark">"</span>I don't just play the game. I study how it works.<span class="quote-mark">"</span>
+          </blockquote>
+          <!-- Highlight Cards -->
+          <div class="about-cards">
+            <div class="about-card glass reveal-up">
+              <span class="about-card-num mono">01</span>
+              <h4>TECHNICAL FOUNDATION</h4>
+              <p>Software Engineering · Backend Development · System Logic</p>
+            </div>
+            <div class="about-card glass reveal-up" style="animation-delay:0.15s">
+              <span class="about-card-num mono">02</span>
+              <h4>GAMING PERSPECTIVE</h4>
+              <p>Competitive FPS · Gameplay Analysis · Tactical Systems</p>
+            </div>
+            <div class="about-card glass reveal-up" style="animation-delay:0.3s">
+              <span class="about-card-num mono">03</span>
+              <h4>QUALITY MINDSET</h4>
+              <p>Testing · Validation · Analytical Thinking</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROFESSIONAL IDENTITY / EXPERTISE (Interactive 3D Flip Cards)
+  ══════════════════════════════════════ -->
+  <section id="expertise">
+    <div class="section-inner">
+      <div class="section-num mono">04</div>
+      <div class="expertise-header-row">
+        <div>
+          <span class="expertise-badge mono">DUAL-SPECIALIZATION BLUEPRINT</span>
+          <h2 class="section-heading reveal-up">PROFESSIONAL IDENTITY</h2>
+        </div>
+        <p class="expertise-hint mono reveal-up">💡 CLICK CARD OR BUTTON TO FLIP & EXPLORE BLUEPRINTS</p>
+      </div>
+
+      <div class="expertise-grid">
+        <!-- Card A — Game Design (3D Flip) -->
+        <div class="expertise-flip-card reveal-up" id="flip-card-design">
+          <div class="expertise-flipper">
+            <!-- Front Face -->
+            <div class="expertise-card-face expertise-card-front glass">
+              <div class="spotlight-layer"></div>
+              <div class="card-face-content">
+                <div class="face-top-row">
+                  <div class="expertise-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="4" y="14" width="40" height="26" rx="8" stroke="#62A8FF" stroke-width="2.5"/>
+                      <circle cx="14" cy="27" r="3" fill="#62A8FF"/>
+                      <circle cx="34" cy="27" r="3" fill="#52E0E0"/>
+                      <line x1="30" y1="24" x2="30" y2="30" stroke="#52E0E0" stroke-width="2.5" stroke-linecap="round"/>
+                      <line x1="27" y1="27" x2="33" y2="27" stroke="#52E0E0" stroke-width="2.5" stroke-linecap="round"/>
+                      <rect x="20" y="10" width="8" height="6" rx="2" fill="#9B82FF"/>
+                      <circle cx="24" cy="21" r="2" fill="#9B82FF"/>
+                    </svg>
+                  </div>
+                  <span class="expertise-tag mono">CARD 01 // FRONT</span>
+                </div>
+                <h3 class="expertise-title">GAME DESIGN</h3>
+                <p class="expertise-desc">"Exploring gameplay systems, combat mechanics, competitive balance, and player engagement."</p>
+                <ul class="expertise-list">
+                  <li>Gameplay Systems Architecture</li>
+                  <li>Combat Mechanics & Recoil Pacing</li>
+                  <li>Competitive Balance & Counterplay</li>
+                  <li>Player Decision-Making Trees</li>
+                  <li>Tactical Coordination Models</li>
+                  <li>Player Engagement & Progression</li>
+                </ul>
+                <div class="face-action-row">
+                  <button type="button" class="btn-flip-trigger mono" data-target="flip-card-design">
+                    <span>↻ FLIP FOR BLUEPRINT SPEC</span>
+                  </button>
+                  <a href="#mindset" class="expertise-link-quick mono">Go to Mindset →</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Back Face (Blueprint) -->
+            <div class="expertise-card-face expertise-card-back glass">
+              <div class="blueprint-grid-bg"></div>
+              <div class="card-face-content">
+                <div class="face-top-row">
+                  <span class="blueprint-badge mono">📐 GAMEPLAY ARCHITECTURE SPEC</span>
+                  <button type="button" class="btn-flip-close mono" data-target="flip-card-design">↺ FLIP BACK</button>
+                </div>
+                <h4 class="blueprint-title">COMBAT PACING & SYSTEM FLOW</h4>
+                <div class="blueprint-diagram">
+                  <div class="bp-stage">
+                    <span class="bp-dot blue"></span>
+                    <span class="bp-name mono">INPUT TRIGGER</span>
+                    <span class="bp-sub">Frame-accurate response</span>
+                  </div>
+                  <div class="bp-arrow">→</div>
+                  <div class="bp-stage">
+                    <span class="bp-dot cyan"></span>
+                    <span class="bp-name mono">MECHANIC RESOLVE</span>
+                    <span class="bp-sub">Spread / Recoil / CD</span>
+                  </div>
+                  <div class="bp-arrow">→</div>
+                  <div class="bp-stage">
+                    <span class="bp-dot purple"></span>
+                    <span class="bp-name mono">VISCERAL FEEDBACK</span>
+                    <span class="bp-sub">SFX / Hitmarker / Shake</span>
+                  </div>
+                </div>
+                <div class="blueprint-pillars">
+                  <div class="bp-item">
+                    <span class="bp-code mono">SYS_01</span>
+                    <p><strong>Ability Economy:</strong> Resource loops where tactical decisions incur intentional trade-offs.</p>
+                  </div>
+                  <div class="bp-item">
+                    <span class="bp-code mono">SYS_02</span>
+                    <p><strong>Counterplay Purity:</strong> Every aggressive utility has an intelligible tactical counter.</p>
+                  </div>
+                </div>
+                <div class="face-bottom-action">
+                  <a href="#mindset" class="btn-primary btn-blueprint-cta mono">VIEW DESIGN PHILOSOPHY →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card B — QA Testing (3D Flip) -->
+        <div class="expertise-flip-card reveal-up" id="flip-card-qa" style="animation-delay:0.2s">
+          <div class="expertise-flipper">
+            <!-- Front Face -->
+            <div class="expertise-card-face expertise-card-front glass">
+              <div class="spotlight-layer"></div>
+              <div class="card-face-content">
+                <div class="face-top-row">
+                  <div class="expertise-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="8" y="6" width="32" height="38" rx="4" stroke="#52E0E0" stroke-width="2.5"/>
+                      <line x1="15" y1="16" x2="33" y2="16" stroke="#52E0E0" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="15" y1="22" x2="33" y2="22" stroke="#9B82FF" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="15" y1="28" x2="25" y2="28" stroke="#9B82FF" stroke-width="2" stroke-linecap="round"/>
+                      <circle cx="33" cy="35" r="6" fill="#08090D" stroke="#62A8FF" stroke-width="2"/>
+                      <line x1="30.5" y1="37.5" x2="36.5" y2="32" stroke="#62A8FF" stroke-width="2" stroke-linecap="round"/>
+                      <circle cx="33" cy="35" r="2" fill="#62A8FF"/>
+                    </svg>
+                  </div>
+                  <span class="expertise-tag mono">CARD 02 // FRONT</span>
+                </div>
+                <h3 class="expertise-title">GAME QA TESTING</h3>
+                <p class="expertise-desc">"Evaluating software behavior, validating game mechanics, identifying defects, and improving player experience."</p>
+                <ul class="expertise-list">
+                  <li>Functional Verification & UAT Execution</li>
+                  <li>Test Scenario & Edge-Case Design</li>
+                  <li>Software Requirement Validation</li>
+                  <li>Defect Investigation & Root Cause Triage</li>
+                  <li>Regression Testing Fundamentals</li>
+                  <li>Gameplay Quality & Polish Assessment</li>
+                </ul>
+                <div class="face-action-row">
+                  <button type="button" class="btn-flip-trigger mono" data-target="flip-card-qa">
+                    <span>↻ FLIP FOR BLUEPRINT SPEC</span>
+                  </button>
+                  <a href="#mindset" class="expertise-link-quick mono">Go to QA Mindset →</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Back Face (Blueprint) -->
+            <div class="expertise-card-face expertise-card-back glass">
+              <div class="blueprint-grid-bg"></div>
+              <div class="card-face-content">
+                <div class="face-top-row">
+                  <span class="blueprint-badge mono">🔬 QA VERIFICATION MATRIX</span>
+                  <button type="button" class="btn-flip-close mono" data-target="flip-card-qa">↺ FLIP BACK</button>
+                </div>
+                <h4 class="blueprint-title">DEFECT TRIAGE & UAT PIPELINE</h4>
+                <div class="blueprint-diagram">
+                  <div class="bp-stage">
+                    <span class="bp-dot green"></span>
+                    <span class="bp-name mono">UAT SCENARIO</span>
+                    <span class="bp-sub">Spec validation</span>
+                  </div>
+                  <div class="bp-arrow">→</div>
+                  <div class="bp-stage">
+                    <span class="bp-dot red"></span>
+                    <span class="bp-name mono">EDGE STRESS</span>
+                    <span class="bp-sub">Race / Packet Loss</span>
+                  </div>
+                  <div class="bp-arrow">→</div>
+                  <div class="bp-stage">
+                    <span class="bp-dot cyan"></span>
+                    <span class="bp-name mono">ROOT ISOLATION</span>
+                    <span class="bp-sub">Repro dump & triage</span>
+                  </div>
+                </div>
+                <div class="blueprint-pillars">
+                  <div class="bp-item">
+                    <span class="bp-code mono">QA_01</span>
+                    <p><strong>Deterministic Verification:</strong> Isolate discrepancies between technical SRS and live runtime gameplay.</p>
+                  </div>
+                  <div class="bp-item">
+                    <span class="bp-code mono">QA_02</span>
+                    <p><strong>PVFCCo Enterprise UAT:</strong> Applied rigorous regression across complex HR & payroll database systems.</p>
+                  </div>
+                </div>
+                <div class="face-bottom-action">
+                  <a href="#mindset" class="btn-primary btn-blueprint-cta mono">VIEW QA METHODOLOGY →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TECHNICAL SKILLS (Cybernetic Competency Matrix - Honest Foundational Level)
+  ══════════════════════════════════════ -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-num mono">05</div>
+      <div class="skills-header-row">
+        <div>
+          <span class="skills-header-badge mono">SYSTEM ARCHITECTURE & CORE TOOLKIT</span>
+          <h2 class="section-heading reveal-up">TECHNICAL SKILLS</h2>
+        </div>
+        <div class="skills-disclaimer-box mono reveal-up">
+          <span class="disc-dot"></span>
+          <span>COMPETENCY LEVEL: <strong>FOUNDATIONAL / ACADEMIC & APPLIED</strong></span>
+        </div>
+      </div>
+
+      <div class="skills-matrix-grid">
+
+        <!-- Module 01: Programming Languages -->
+        <div class="skill-module-card glass reveal-up">
+          <div class="module-header">
+            <div class="module-code mono">MOD_01 // CORE CODE</div>
+            <span class="module-status-pill mono">Foundational</span>
+          </div>
+          <h3 class="module-title">PROGRAMMING LANGUAGES</h3>
+          <p class="module-desc">Fundamental programming concepts, object-oriented design, algorithms, and backend querying.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">C#</span>
+                <span class="chip-level-indicator mono" title="Academic & Project-applied">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">OOP Logic · ASP.NET MVC Backend</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">C / C++</span>
+                <span class="chip-level-indicator mono" title="Academic Foundation">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Core Data Structures · System Pointers</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">JavaScript</span>
+                <span class="chip-level-indicator mono" title="Project-applied">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">ES6+ Asynchronous · Node.js APIs</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">SQL</span>
+                <span class="chip-level-indicator mono" title="Project-applied">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Complex Joins · Transactions · EF6</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 02: Backend Development -->
+        <div class="skill-module-card glass reveal-up" style="animation-delay:0.1s">
+          <div class="module-header">
+            <div class="module-code mono">MOD_02 // SYSTEM LOGIC</div>
+            <span class="module-status-pill mono">Applied in Projects</span>
+          </div>
+          <h3 class="module-title">BACKEND DEVELOPMENT</h3>
+          <p class="module-desc">Building REST APIs, multi-tenant controllers, authentication, and WebSocket streams.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">ASP.NET MVC</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Role-based Access · Food Delivery Platform</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Node.js</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Non-blocking runtime · Fitness App Backend</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Express.js</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">RESTful Routing · Middleware Chains</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">WebSocket</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Socket.IO Real-time Events & AI Coaching</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 03: Databases -->
+        <div class="skill-module-card glass reveal-up" style="animation-delay:0.2s">
+          <div class="module-header">
+            <div class="module-code mono">MOD_03 // PERSISTENCE</div>
+            <span class="module-status-pill mono">Practical Queries</span>
+          </div>
+          <h3 class="module-title">DATABASES & STORAGE</h3>
+          <p class="module-desc">Relational and document storage schemas, transaction consistency, and data integrity.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">SQL Server</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Relational Modeling · Enterprise Schemas</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">MySQL</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">CRUD Operations · Indexing Basics</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">MongoDB</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">11+ Collections · Mongoose Schemas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 04: Testing & QA Tools -->
+        <div class="skill-module-card glass reveal-up" style="animation-delay:0.1s">
+          <div class="module-header">
+            <div class="module-code mono">MOD_04 // QUALITY SUITE</div>
+            <span class="module-status-pill mono">Internship Experience</span>
+          </div>
+          <h3 class="module-title">TESTING TOOLS & UAT</h3>
+          <p class="module-desc">Hands-on user acceptance testing, API validation, and automated script execution.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Postman</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">HTTP Headers · Payloads · Response Validation</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Selenium IDE</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Scenario Recording · UI Regression Runs</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Katalon Studio</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Enterprise UAT modules at PVFCCo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 05: Development Workflow -->
+        <div class="skill-module-card glass reveal-up" style="animation-delay:0.2s">
+          <div class="module-header">
+            <div class="module-code mono">MOD_05 // WORKFLOW</div>
+            <span class="module-status-pill mono">Version Control</span>
+          </div>
+          <h3 class="module-title">DEV TOOLS & WORKFLOW</h3>
+          <p class="module-desc">Source control management, commit discipline, and project documentation.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">Git</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Branch management · Conflict resolution</span>
+            </div>
+            <div class="skill-chip">
+              <div class="chip-top">
+                <span class="chip-name mono">GitHub</span>
+                <span class="chip-level-indicator mono">[ ● ● ○ ]</span>
+              </div>
+              <span class="chip-context">Open repositories · Issue tracking · CI runs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 06: Gameplay Knowledge -->
+        <div class="skill-module-card glass reveal-up" style="animation-delay:0.3s">
+          <div class="module-header">
+            <div class="module-code mono">MOD_06 // GAMEPLAY ANALYSIS</div>
+            <span class="module-status-pill mono">Competitive Domain</span>
+          </div>
+          <h3 class="module-title">GAMEPLAY KNOWLEDGE</h3>
+          <p class="module-desc">Systematic understanding of mechanics derived from high-tier competitive FPS gaming.</p>
+          <div class="skill-chips-list">
+            <div class="skill-chip highlight-game">
+              <div class="chip-top">
+                <span class="chip-name mono">FPS Mechanics</span>
+                <span class="chip-level-indicator mono">[ IMMORTAL ]</span>
+              </div>
+              <span class="chip-context">Recoil curves · Hitbox parity · Strafe mechanics</span>
+            </div>
+            <div class="skill-chip highlight-game">
+              <div class="chip-top">
+                <span class="chip-name mono">Combat Systems</span>
+                <span class="chip-level-indicator mono">[ BALANCED ]</span>
+              </div>
+              <span class="chip-context">Time-to-kill pacing · Utility economy · Cooldowns</span>
+            </div>
+            <div class="skill-chip highlight-game">
+              <div class="chip-top">
+                <span class="chip-name mono">Tactical Synergy</span>
+                <span class="chip-level-indicator mono">[ TEAM PLAY ]</span>
+              </div>
+              <span class="chip-context">Map zoning · Sightlines · Execution timing</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GAMING EXPERIENCE
+  ══════════════════════════════════════ -->
+  <section id="gaming">
+    <div class="section-inner">
+      <div class="section-num mono">06</div>
+      <h2 class="section-heading reveal-up">GAMING EXPERIENCE</h2>
+      <div class="gaming-header-row reveal-up">
+        <div class="gaming-scroll-hint mono">← DRAG OR SCROLL TO EXPLORE →</div>
+        <div class="gaming-nav-btns">
+          <button class="gaming-nav-btn prev" id="gaming-prev" aria-label="Previous game">‹</button>
+          <button class="gaming-nav-btn next" id="gaming-next" aria-label="Next game">›</button>
+        </div>
+      </div>
+      <div class="gaming-gallery-wrap">
+        <div class="gaming-gallery" id="gaming-gallery">
+
+          <div class="game-card tilt-card reveal-up" style="--card-color-1:#0A1628;--card-color-2:#1A2D52">
+            <div class="game-card-bg"></div>
+            <div class="game-card-content">
+              <div class="game-rank-badge mono">IMMORTAL</div>
+              <div class="game-genre-tag mono">Competitive FPS</div>
+              <h3 class="game-title">VALORANT</h3>
+              <p class="game-period mono">2022 – Present</p>
+              <div class="game-analysis">
+                <p class="game-analysis-title mono">SYSTEM ANALYSIS</p>
+                <ul>
+                  <li>Competitive match flow</li>
+                  <li>Agent abilities & utility interactions</li>
+                  <li>Ability economy management</li>
+                  <li>Map control dynamics</li>
+                  <li>Role synergy & coordination</li>
+                  <li>Tactical coordination</li>
+                </ul>
+              </div>
+            </div>
+            <div class="game-card-glow" style="--glow-color:#62A8FF"></div>
+          </div>
+
+          <div class="game-card tilt-card reveal-up" style="--card-color-1:#0A1A14;--card-color-2:#0D2E1E;animation-delay:0.1s">
+            <div class="game-card-bg"></div>
+            <div class="game-card-content">
+              <div class="game-rank-badge mono">GOLD IV</div>
+              <div class="game-genre-tag mono">Battle Royale / Hero Shooter</div>
+              <h3 class="game-title">APEX LEGENDS</h3>
+              <p class="game-period mono">Sep 2026 – Present</p>
+              <div class="game-analysis">
+                <p class="game-analysis-title mono">SYSTEM ANALYSIS</p>
+                <ul>
+                  <li>Legend abilities deep-dive</li>
+                  <li>Movement mechanics & traversal</li>
+                  <li>Vertical traversal systems</li>
+                  <li>Combat encounter pacing</li>
+                  <li>Team compositions</li>
+                  <li>Combat pacing dynamics</li>
+                </ul>
+              </div>
+            </div>
+            <div class="game-card-glow" style="--glow-color:#52E0E0"></div>
+          </div>
+
+          <div class="game-card tilt-card reveal-up" style="--card-color-1:#1A100A;--card-color-2:#2E1A0D;animation-delay:0.2s">
+            <div class="game-card-bg"></div>
+            <div class="game-card-content">
+              <div class="game-rank-badge mono">GOLD III</div>
+              <div class="game-genre-tag mono">Battle Royale</div>
+              <h3 class="game-title">PUBG: BATTLEGROUNDS PC</h3>
+              <p class="game-period mono">Apr – Jun 2026</p>
+              <div class="game-analysis">
+                <p class="game-analysis-title mono">SYSTEM ANALYSIS</p>
+                <ul>
+                  <li>Looting & inventory management</li>
+                  <li>Positioning strategy</li>
+                  <li>Zone management</li>
+                  <li>Equipment selection</li>
+                  <li>Risk assessment</li>
+                </ul>
+              </div>
+            </div>
+            <div class="game-card-glow" style="--glow-color:#FF9B4A"></div>
+          </div>
+
+          <div class="game-card tilt-card reveal-up" style="--card-color-1:#0A1428;--card-color-2:#0F2040;animation-delay:0.3s">
+            <div class="game-card-bg"></div>
+            <div class="game-card-content">
+              <div class="game-rank-badge mono">EXPERIENCED</div>
+              <div class="game-genre-tag mono">Tactical FPS</div>
+              <h3 class="game-title">COUNTER-STRIKE</h3>
+              <p class="game-period mono">Sep 2026 – Present</p>
+              <div class="game-analysis">
+                <p class="game-analysis-title mono">SYSTEM ANALYSIS</p>
+                <ul>
+                  <li>Weapon recoil patterns</li>
+                  <li>Smoke/flash interactions</li>
+                  <li>Tactical utility usage</li>
+                  <li>Competitive skill expression</li>
+                </ul>
+              </div>
+            </div>
+            <div class="game-card-glow" style="--glow-color:#9B82FF"></div>
+          </div>
+
+          <div class="game-card tilt-card reveal-up" style="--card-color-1:#0A1A28;--card-color-2:#102030;animation-delay:0.4s">
+            <div class="game-card-bg"></div>
+            <div class="game-card-content">
+              <div class="game-rank-badge mono">COLONEL</div>
+              <div class="game-genre-tag mono">Tactical Shooter</div>
+              <h3 class="game-title">DELTA FORCE</h3>
+              <p class="game-period mono">Jan – Jul 2026</p>
+              <div class="game-analysis">
+                <p class="game-analysis-title mono">SYSTEM ANALYSIS</p>
+                <ul>
+                  <li>Campaign & Warfare modes</li>
+                  <li>Large-scale coordination</li>
+                  <li>Vehicle dynamics</li>
+                  <li>Destructible environments</li>
+                </ul>
+              </div>
+            </div>
+            <div class="game-card-glow" style="--glow-color:#62A8FF"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FEATURED PROJECTS
+  ══════════════════════════════════════ -->
+  <section id="projects">
+    <div class="section-inner">
+      <div class="section-num mono">07</div>
+      <h2 class="section-heading reveal-up">FEATURED PROJECTS</h2>
+
+      <!-- Project 01 -->
+      <div class="project-showcase reveal-up">
+        <div class="project-visual">
+          <div class="project-mockup" style="--mock-accent:#62A8FF;">
+            <div class="pm-window">
+              <div class="pm-window-header">
+                <div class="pm-dots">
+                  <span class="pm-dot red"></span>
+                  <span class="pm-dot yellow"></span>
+                  <span class="pm-dot green"></span>
+                </div>
+                <div class="pm-address-bar mono">
+                  <span class="pm-secure-lock">🔒</span> https://food-delivery-platform.internal/dispatch
+                </div>
+                <div class="pm-window-badge mono">ASP.NET MVC 5</div>
+              </div>
+              <div class="pm-app-body">
+                <!-- App Sidebar -->
+                <div class="pm-sidebar">
+                  <div class="pm-brand">
+                    <span class="pm-logo-icon">⚡</span>
+                    <span class="pm-logo-text mono">GO-EATS</span>
+                  </div>
+                  <div class="pm-nav-items">
+                    <div class="pm-nav-item active"><span class="pm-icon">📊</span><span class="pm-txt">Dispatch Hub</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">🛵</span><span class="pm-txt">Drivers (42)</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">🏪</span><span class="pm-txt">Vendors</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">📈</span><span class="pm-txt">Analytics</span></div>
+                  </div>
+                  <div class="pm-sidebar-footer mono">
+                    <span class="pm-status-ping"></span> RBAC: ADMIN
+                  </div>
+                </div>
+                <!-- App Main View -->
+                <div class="pm-main-view">
+                  <!-- Header stats -->
+                  <div class="pm-stat-row">
+                    <div class="pm-stat-card">
+                      <span class="pm-stat-label mono">ACTIVE ORDERS</span>
+                      <span class="pm-stat-num mono">1,284</span>
+                      <span class="pm-stat-change pos mono">↑ +14.2%</span>
+                    </div>
+                    <div class="pm-stat-card">
+                      <span class="pm-stat-label mono">ORS ROUTE OPTIM</span>
+                      <span class="pm-stat-num mono">8.4 min</span>
+                      <span class="pm-stat-change mono">Nominatim Synced</span>
+                    </div>
+                    <div class="pm-stat-card highlight">
+                      <span class="pm-stat-label mono">TRANSACTIONS</span>
+                      <span class="pm-stat-num mono">SQL Server EF6</span>
+                      <span class="pm-stat-change mono text-cyan">Concurrent Safe</span>
+                    </div>
+                  </div>
+                  <!-- Visual Interactive Map & Live Feed -->
+                  <div class="pm-grid-2col">
+                    <div class="pm-panel pm-map-panel">
+                      <div class="pm-panel-header mono"><span>📍 LIVE DISPATCH RADAR</span><span class="text-cyan">ORS Geo-Route</span></div>
+                      <div class="pm-radar-area">
+                        <div class="pm-radar-grid"></div>
+                        <div class="pm-radar-sweep"></div>
+                        <div class="pm-pin pin-1" style="top:25%; left:30%;" data-title="Driver #18 - Active">🛵</div>
+                        <div class="pm-pin pin-2" style="top:60%; left:55%;" data-title="Restaurant #04">🏪</div>
+                        <div class="pm-pin pin-3" style="top:40%; left:75%;" data-title="Drop-off Customer">📍</div>
+                        <svg class="pm-route-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                          <path d="M 30,25 Q 45,50 55,60 T 75,40" fill="none" stroke="#62A8FF" stroke-width="2" stroke-dasharray="3,3" class="pm-route-anim" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="pm-panel pm-terminal-panel">
+                      <div class="pm-panel-header mono"><span>⚙️ EVENT LOG</span><span>SMTP / EXCEL</span></div>
+                      <div class="pm-log-stream mono">
+                        <div class="log-line"><span class="log-time">20:25:12</span> <span class="log-tag role">[RBAC]</span> User 'manager_02' authenticated</div>
+                        <div class="log-line"><span class="log-time">20:25:14</span> <span class="log-tag sql">[SQL]</span> BEGIN TRAN: Order_#8841 consistency OK</div>
+                        <div class="log-line"><span class="log-time">20:25:15</span> <span class="log-tag route">[ORS]</span> Matrix computed: 4.2km ETA 11m</div>
+                        <div class="log-line"><span class="log-time">20:25:17</span> <span class="log-tag exp">[EPPlus]</span> Export report auto-generated .xlsx</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-mockup-glow" style="--glow-c: rgba(98,168,255,0.25);"></div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <span class="project-num mono">PROJECT 01</span>
+            <span class="project-role mono">Backend Developer</span>
+            <span class="project-period mono">Oct 2025 – Dec 2025</span>
+          </div>
+          <h3 class="project-title">FOOD DELIVERY PLATFORM</h3>
+          <p class="project-overview">Developed an enterprise-grade web-based food delivery backend with role-based access control, specialized multi-tenant dashboards, and high-precision route calculations.</p>
+          <div class="project-stack">
+            <span class="stack-tag">ASP.NET MVC</span>
+            <span class="stack-tag">C#</span>
+            <span class="stack-tag">Entity Framework 6</span>
+            <span class="stack-tag">SQL Server</span>
+            <span class="stack-tag">OpenRouteService</span>
+          </div>
+          <div class="project-contributions">
+            <h4 class="mono">KEY CONTRIBUTIONS</h4>
+            <ul>
+              <li>Designed granular Role-Based Access Control (RBAC) across multi-tier dashboards</li>
+              <li>Engineered concurrent SQL transaction handlers to ensure zero order discrepancy</li>
+              <li>Integrated OpenRouteService & Nominatim APIs for accurate routing and geocoding</li>
+              <li>Automated asynchronous Excel reporting (EPPlus) and transactional SMTP notification services</li>
+            </ul>
+          </div>
+          <a href="https://github.com/zicotruong1312/Do_An_Chuyen_Nganh" target="_blank" rel="noopener" class="btn-primary magnetic" data-cursor-label="OPEN"><span>VIEW ON GITHUB</span> <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Project 02 -->
+      <div class="project-showcase project-alt reveal-up" style="animation-delay:0.2s">
+        <div class="project-visual">
+          <div class="project-mockup" style="--mock-accent:#52E0E0;">
+            <div class="pm-window">
+              <div class="pm-window-header">
+                <div class="pm-dots">
+                  <span class="pm-dot red"></span>
+                  <span class="pm-dot yellow"></span>
+                  <span class="pm-dot green"></span>
+                </div>
+                <div class="pm-address-bar mono">
+                  <span class="pm-secure-lock">🔒</span> https://fit-pulse-ai.io/dashboard/coaching
+                </div>
+                <div class="pm-window-badge mono">NODE.JS + SOCKET.IO</div>
+              </div>
+              <div class="pm-app-body">
+                <!-- Sidebar -->
+                <div class="pm-sidebar">
+                  <div class="pm-brand">
+                    <span class="pm-logo-icon">🔥</span>
+                    <span class="pm-logo-text mono">FITPULSE</span>
+                  </div>
+                  <div class="pm-nav-items">
+                    <div class="pm-nav-item active"><span class="pm-icon">🤖</span><span class="pm-txt">AI Coach</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">🥗</span><span class="pm-txt">Macros Tracker</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">📅</span><span class="pm-txt">7-Day Plan</span></div>
+                    <div class="pm-nav-item"><span class="pm-icon">📊</span><span class="pm-txt">11 Models DB</span></div>
+                  </div>
+                  <div class="pm-sidebar-footer mono">
+                    <span class="pm-status-ping online"></span> SOCKET: CONNECTED
+                  </div>
+                </div>
+                <!-- Main View -->
+                <div class="pm-main-view">
+                  <div class="pm-stat-row">
+                    <div class="pm-stat-card">
+                      <span class="pm-stat-label mono">CALORIC TARGET</span>
+                      <span class="pm-stat-num mono">2,450 kcal</span>
+                      <span class="pm-stat-change pos mono">Prot: 180g | Carb: 240g</span>
+                    </div>
+                    <div class="pm-stat-card highlight-green">
+                      <span class="pm-stat-label mono">AI ADAPTIVE ENGINE</span>
+                      <span class="pm-stat-num mono">Gemini Pro API</span>
+                      <span class="pm-stat-change mono text-cyan">Real-time Feedback</span>
+                    </div>
+                    <div class="pm-stat-card">
+                      <span class="pm-stat-label mono">DATABASE SCHEMAS</span>
+                      <span class="pm-stat-num mono">11+ Models</span>
+                      <span class="pm-stat-change mono">MongoDB Atlas</span>
+                    </div>
+                  </div>
+                  <!-- Chat & Macro Visualization -->
+                  <div class="pm-grid-2col">
+                    <div class="pm-panel pm-chat-panel">
+                      <div class="pm-panel-header mono"><span>💬 REAL-TIME COACHING</span><span class="text-green">Socket.IO Live</span></div>
+                      <div class="pm-chat-stream">
+                        <div class="pm-bubble bot">
+                          <div class="pm-bubble-hdr mono">🤖 AI COACH (Gemini)</div>
+                          <div>Target hypertrophy achieved on Leg Day. Adjusting protein +15g and scheduling deload next Monday.</div>
+                        </div>
+                        <div class="pm-bubble user">
+                          <div class="pm-bubble-hdr mono">👤 USER_829</div>
+                          <div>Confirmed! Logged 85kg bench press session for today.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pm-panel pm-analytics-panel">
+                      <div class="pm-panel-header mono"><span>📊 7-DAY RECOVERY MATRIX</span><span>JWT/BCRYPT</span></div>
+                      <div class="pm-bars-chart">
+                        <div class="chart-col"><div class="chart-bar" style="height:70%"></div><span class="mono">MON</span></div>
+                        <div class="chart-col"><div class="chart-bar" style="height:90%"></div><span class="mono">TUE</span></div>
+                        <div class="chart-col"><div class="chart-bar" style="height:45%"></div><span class="mono">WED</span></div>
+                        <div class="chart-col"><div class="chart-bar active" style="height:85%"></div><span class="mono">THU</span></div>
+                        <div class="chart-col"><div class="chart-bar" style="height:60%"></div><span class="mono">FRI</span></div>
+                        <div class="chart-col"><div class="chart-bar" style="height:95%"></div><span class="mono">SAT</span></div>
+                        <div class="chart-col"><div class="chart-bar" style="height:30%"></div><span class="mono">SUN</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-mockup-glow" style="--glow-c: rgba(82,224,224,0.25);"></div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <span class="project-num mono">PROJECT 02</span>
+            <span class="project-role mono">Backend Developer</span>
+            <span class="project-period mono">Jan 2026 – Mar 2026</span>
+          </div>
+          <h3 class="project-title">FITNESS & NUTRITION TRACKING</h3>
+          <p class="project-overview">Architected a scalable fullstack micro-service backend managing complex health schemas, algorithmic nutritional recommendations, and interactive AI coaching with low-latency sockets.</p>
+          <div class="project-stack">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Express.js</span>
+            <span class="stack-tag">MongoDB</span>
+            <span class="stack-tag">Socket.IO</span>
+            <span class="stack-tag">JWT</span>
+            <span class="stack-tag">Gemini AI</span>
+          </div>
+          <div class="project-contributions">
+            <h4 class="mono">KEY CONTRIBUTIONS</h4>
+            <ul>
+              <li>Architected and implemented 11+ normalized MongoDB data models for workouts, nutrition, and recovery</li>
+              <li>Formulated adaptive 7-day workout and dynamic macronutrient recommendation engines</li>
+              <li>Integrated Gemini/OpenAI API streams into real-time interactive user coaching workflows</li>
+              <li>Hardened API endpoints with rate limiting, bcrypt encryption, and stateless JWT authorization</li>
+            </ul>
+          </div>
+          <a href="https://github.com/zicotruong1312/gym_tracking_project" target="_blank" rel="noopener" class="btn-primary magnetic" data-cursor-label="OPEN"><span>VIEW ON GITHUB</span> <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+          <h3 class="project-title">FITNESS & NUTRITION TRACKING</h3>
+          <p class="project-overview">Built a fitness and nutrition tracking application designed to manage user data, provide structured recommendations, and support interactive coaching functionality.</p>
+          <div class="project-stack">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Express.js</span>
+            <span class="stack-tag">MongoDB</span>
+            <span class="stack-tag">Socket.IO</span>
+            <span class="stack-tag">JWT</span>
+            <span class="stack-tag">Gemini AI</span>
+          </div>
+          <div class="project-contributions">
+            <h4 class="mono">KEY CONTRIBUTIONS</h4>
+            <ul>
+              <li>11+ data models for comprehensive fitness tracking</li>
+              <li>7-day exercise recommendation engine</li>
+              <li>Macronutrient calculation & recommendations</li>
+              <li>Gemini/OpenAI coaching integration</li>
+              <li>JWT + bcrypt authentication</li>
+              <li>Rate limiting & Socket.IO real-time features</li>
+            </ul>
+          </div>
+          <a href="https://github.com/zicotruong1312/gym_tracking_project" target="_blank" rel="noopener" class="btn-primary magnetic" data-cursor-label="OPEN">VIEW ON GITHUB →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROFESSIONAL EXPERIENCE
+  ══════════════════════════════════════ -->
+  <section id="experience">
+    <div class="section-inner">
+      <div class="section-num mono">08</div>
+      <h2 class="section-heading reveal-up">PROFESSIONAL EXPERIENCE</h2>
+      <div class="timeline-wrap">
+        <div class="timeline-line" id="timeline-line"></div>
+        <div class="timeline-entry reveal-up">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card glass">
+            <div class="timeline-header">
+              <div>
+                <h3 class="timeline-company">PETROVIETNAM FERTILIZER AND CHEMICALS CORPORATION</h3>
+                <p class="timeline-company-short mono">(PVFCCo)</p>
+                <p class="timeline-position">Software Testing Intern</p>
+              </div>
+              <span class="timeline-period mono">Apr 2026 – Jun 2026</span>
+            </div>
+            <p class="timeline-overview">Participated in software testing activities and user acceptance testing for enterprise HR system modules.</p>
+            <button class="timeline-toggle mono" id="exp-toggle">SHOW RESPONSIBILITIES ↓</button>
+            <ul class="timeline-responsibilities" id="exp-list">
+              <li>UAT for payroll, employee health, HR, and insurance modules</li>
+              <li>Validated business rules and data constraints</li>
+              <li>Verified UI behavior and error handling</li>
+              <li>Executed structured test scenarios</li>
+              <li>Documented unexpected system behavior</li>
+              <li>Used Postman, Selenium IDE, and Katalon Studio</li>
+              <li>Supported functional verification across modules</li>
+            </ul>
+            <div class="timeline-tools">
+              <span class="stack-tag">Postman</span>
+              <span class="stack-tag">Selenium IDE</span>
+              <span class="stack-tag">Katalon Studio</span>
+              <span class="stack-tag">UAT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GAME DESIGN & QA MINDSET
+  ══════════════════════════════════════ -->
+  <section id="mindset">
+    <div class="section-inner">
+      <div class="section-num mono">09</div>
+      <div class="mindset-header-center">
+        <span class="mindset-badge mono">PHILOSOPHY & METHODOLOGY</span>
+        <h2 class="section-heading reveal-up">THE MINDSET BEHIND THE WORK</h2>
+        <p class="mindset-tagline">"Bridging creative system mechanics with rigorous software engineering discipline."</p>
+      </div>
+
+      <div class="mindset-pillars-container">
+        <!-- Pillar 01: Game Design -->
+        <div class="mindset-pillar design-pillar reveal-up">
+          <div class="pillar-glow"></div>
+          <div class="pillar-header">
+            <div class="pillar-header-left">
+              <span class="pillar-num mono">CORE 01</span>
+              <h3 class="pillar-title">GAME DESIGN THINKING</h3>
+              <p class="pillar-quote mono">"UNDERSTANDING THE SYSTEM BEHIND THE GAME"</p>
+            </div>
+            <div class="pillar-symbol">🎮</div>
+          </div>
+
+          <div class="mindset-cards-grid">
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #62A8FF;"></div>
+              <div class="card-top">
+                <span class="card-ico">⚙️</span>
+                <span class="card-idx mono">01</span>
+              </div>
+              <h4>GAMEPLAY SYSTEMS</h4>
+              <p>How interconnected mechanics, resource loops, and player progression interact to create an engaging whole.</p>
+              <div class="card-tag mono">SYSTEM ARCHITECTURE</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #52E0E0;"></div>
+              <div class="card-top">
+                <span class="card-ico">⚔️</span>
+                <span class="card-idx mono">02</span>
+              </div>
+              <h4>COMBAT MECHANICS</h4>
+              <p>Balancing weapon ballistics, recoil impulses, ability cooldowns, and tactical mobility to deliver punchy combat.</p>
+              <div class="card-tag mono">TACTICAL FEEDBACK</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #9B82FF;"></div>
+              <div class="card-top">
+                <span class="card-ico">⚖️</span>
+                <span class="card-idx mono">03</span>
+              </div>
+              <h4>GAME BALANCE</h4>
+              <p>Engineering rock-paper-scissors dynamics, counterplay options, and risk-reward ratios for competitive fairness.</p>
+              <div class="card-tag mono">EQUILIBRIUM</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #FF9B4A;"></div>
+              <div class="card-top">
+                <span class="card-ico">🎯</span>
+                <span class="card-idx mono">04</span>
+              </div>
+              <h4>PLAYER EXPERIENCE</h4>
+              <p>Translating sensory feedback, clear telegraphs, and satisfying game state readability into visceral player immersion.</p>
+              <div class="card-tag mono">FLOW STATE</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 02: QA Discipline -->
+        <div class="mindset-pillar qa-pillar reveal-up" style="animation-delay:0.2s">
+          <div class="pillar-glow"></div>
+          <div class="pillar-header">
+            <div class="pillar-header-left">
+              <span class="pillar-num mono">CORE 02</span>
+              <h3 class="pillar-title">QA ENGINEERING MINDSET</h3>
+              <p class="pillar-quote mono">"EVERY DETAIL MATTERS · ZERO TOLERANCE FOR GLITCHES"</p>
+            </div>
+            <div class="pillar-symbol">🔍</div>
+          </div>
+
+          <div class="mindset-cards-grid">
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #52E0E0;"></div>
+              <div class="card-top">
+                <span class="card-ico">✅</span>
+                <span class="card-idx mono">01</span>
+              </div>
+              <h4>FUNCTIONAL VALIDATION</h4>
+              <p>Cross-verifying user stories and system requirements against empirical runtime behaviors and deterministic outcomes.</p>
+              <div class="card-tag mono">VERIFICATION MATRIX</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #62A8FF;"></div>
+              <div class="card-top">
+                <span class="card-ico">🔬</span>
+                <span class="card-idx mono">02</span>
+              </div>
+              <h4>EDGE CASE ANALYSIS</h4>
+              <p>Stressing race conditions, packet loss anomalies, boundary integer overflows, and unexpected multi-user concurrency.</p>
+              <div class="card-tag mono">CORNER-CASE STRESS</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #FF5A78;"></div>
+              <div class="card-top">
+                <span class="card-ico">🐛</span>
+                <span class="card-idx mono">03</span>
+              </div>
+              <h4>DEFECT INVESTIGATION</h4>
+              <p>Systematically isolating root causes, capturing reproducible dumps, and delivering actionable telemetry logs to developers.</p>
+              <div class="card-tag mono">ROOT CAUSE TRIAGE</div>
+            </div>
+
+            <div class="mindset-hex-card glass">
+              <div class="card-accent-bar" style="--bar-c: #9B82FF;"></div>
+              <div class="card-top">
+                <span class="card-ico">🎮</span>
+                <span class="card-idx mono">04</span>
+              </div>
+              <h4>EXPERIENCE RELIABILITY</h4>
+              <p>Guaranteeing that gameplay input latency, camera physics, and state updates are consistently butter-smooth and intuitive.</p>
+              <div class="card-tag mono">QUALITY GUARANTEE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part C — Interactive Lifecycle Pipeline (Responsive, No Overflow Scrollbar) -->
+      <div class="mindset-flow reveal-up">
+        <div class="flow-header-row">
+          <div>
+            <span class="mindset-col-label mono">PART C — INTERACTIVE LIFECYCLE PIPELINE</span>
+            <span class="flow-subtitle mono">Continuous Validation Loop</span>
+          </div>
+          <span class="mono flow-status-live"><span class="live-dot"></span> CONTINUOUS VALIDATION</span>
+        </div>
+        <div class="flow-diagram-wrapper">
+          <div class="flow-diagram" id="flow-diagram">
+
+            <div class="flow-step-card" data-tooltip="Define precise mechanical specifications & user requirements" style="--node-accent:#62A8FF;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 01</span>
+                <span class="step-dot"></span>
+              </div>
+              <div class="flow-node-icon">📋</div>
+              <h4 class="flow-node-label mono">REQUIREMENT</h4>
+              <p class="flow-step-desc">System specification & user stories</p>
+              <div class="flow-step-connector"></div>
+            </div>
+
+            <div class="flow-step-card" data-tooltip="Implement system logic, physics mechanics & gameplay rules" style="--node-accent:#52E0E0;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 02</span>
+                <span class="step-dot"></span>
+              </div>
+              <div class="flow-node-icon">🎮</div>
+              <h4 class="flow-node-label mono">GAMEPLAY SYSTEM</h4>
+              <p class="flow-step-desc">Mechanics loop & physics rules</p>
+              <div class="flow-step-connector"></div>
+            </div>
+
+            <div class="flow-step-card" data-tooltip="Execute automated test suites, functional UAT & stress runs" style="--node-accent:#9B82FF;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 03</span>
+                <span class="step-dot"></span>
+              </div>
+              <div class="flow-node-icon">🧪</div>
+              <h4 class="flow-node-label mono">TESTING</h4>
+              <p class="flow-step-desc">Automated UAT & boundary runs</p>
+              <div class="flow-step-connector"></div>
+            </div>
+
+            <div class="flow-step-card" data-tooltip="Gather telemetry, telemetry graphs & anomaly logs" style="--node-accent:#FF9B4A;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 04</span>
+                <span class="step-dot"></span>
+              </div>
+              <div class="flow-node-icon">👁️</div>
+              <h4 class="flow-node-label mono">OBSERVATION</h4>
+              <p class="flow-step-desc">Telemetry logs & edge-case triage</p>
+              <div class="flow-step-connector"></div>
+            </div>
+
+            <div class="flow-step-card" data-tooltip="Verify parity with design intent and validate quality thresholds" style="--node-accent:#52E0E0;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 05</span>
+                <span class="step-dot"></span>
+              </div>
+              <div class="flow-node-icon">✅</div>
+              <h4 class="flow-node-label mono">VALIDATION</h4>
+              <p class="flow-step-desc">Specification parity sign-off</p>
+              <div class="flow-step-connector"></div>
+            </div>
+
+            <div class="flow-step-card highlight-final" data-tooltip="Deliver an unforgettable, frictionless and balanced player journey" style="--node-accent:#FFD700;">
+              <div class="flow-step-header mono">
+                <span class="step-badge">STEP 06</span>
+                <span class="step-dot gold"></span>
+              </div>
+              <div class="flow-node-icon">⭐</div>
+              <h4 class="flow-node-label mono">PLAYER EXPERIENCE</h4>
+              <p class="flow-step-desc">Balanced, frictionless journey</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="flow-tooltip" id="flow-tooltip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       EDUCATION
+  ══════════════════════════════════════ -->
+  <section id="education">
+    <div class="section-inner">
+      <div class="section-num mono">10</div>
+      <h2 class="section-heading reveal-up">EDUCATION</h2>
+      <div class="edu-card glass reveal-up">
+        <div class="edu-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 8L4 18L24 28L44 18L24 8Z" stroke="#62A8FF" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M12 23V34C12 34 16 40 24 40C32 40 36 34 36 34V23" stroke="#62A8FF" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="44" y1="18" x2="44" y2="30" stroke="#52E0E0" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="44" cy="31" r="2" fill="#52E0E0"/>
+          </svg>
+        </div>
+        <div class="edu-info">
+          <h3 class="edu-university">HO CHI MINH CITY UNIVERSITY OF TECHNOLOGY (HUTECH)</h3>
+          <p class="edu-degree">Bachelor's Degree in Software Engineering</p>
+          <div class="edu-meta">
+            <span class="mono edu-period">2022 – Present</span>
+            <div class="edu-gpa">
+              <span class="mono edu-gpa-label">GPA</span>
+              <span class="mono edu-gpa-value" id="gpa-counter">0.00</span>
+              <span class="mono edu-gpa-max">/ 4.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section id="contact">
+    <canvas id="contact-bg-canvas"></canvas>
+    <div class="section-inner">
+      <div class="section-num mono">11</div>
+      <h2 class="contact-headline reveal-up">LET'S BUILD SOMETHING<br/>THAT MATTERS.</h2>
+      <p class="contact-sub reveal-up">Interested in game development, gameplay systems, and quality-driven experiences. Open to opportunities where technical thinking and player-focused perspectives can make a difference.</p>
+
+      <div class="contact-layout">
+        <div class="contact-info reveal-up">
+          <div class="contact-item" id="copy-email" data-cursor-label="COPY">
+            <span class="contact-item-icon">✉️</span>
+            <div>
+              <p class="mono contact-item-label">EMAIL</p>
+              <p class="contact-item-value">vithao.contact@gmail.com</p>
+            </div>
+            <span class="contact-copy-hint mono">CLICK TO COPY</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-icon">📍</span>
+            <div>
+              <p class="mono contact-item-label">LOCATION</p>
+              <p class="contact-item-value">Ho Chi Minh City, Vietnam</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-icon">💻</span>
+            <div>
+              <p class="mono contact-item-label">GITHUB</p>
+              <a href="https://github.com/zicotruong1312" target="_blank" rel="noopener" class="contact-item-value contact-link" data-cursor-label="OPEN">github.com/zicotruong1312</a>
+            </div>
+          </div>
+          <div class="contact-ctas">
+            <a href="mailto:vithao.contact@gmail.com" class="btn-primary magnetic" data-cursor-label="OPEN">GET IN TOUCH</a>
+            <a href="https://github.com/zicotruong1312" target="_blank" rel="noopener" class="btn-ghost magnetic" data-cursor-label="OPEN">VIEW GITHUB</a>
+            <a href="cv/GAME DESIGNER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-Designer.pdf" class="btn-ghost magnetic" data-cursor-label="DOWNLOAD">🎮 GAME DESIGNER CV</a>
+            <a href="cv/GAME QA TESTER/TRUONG-DANG-VI-THAO.pdf" download="ZICO-CV-Game-QA.pdf" class="btn-ghost magnetic" data-cursor-label="DOWNLOAD">🔍 GAME QA CV</a>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <form class="contact-form glass reveal-up" id="contact-form" style="animation-delay:0.2s">
+          <h3 class="contact-form-title mono">SEND A MESSAGE</h3>
+          <div class="form-group">
+            <label class="form-label mono" for="f-name">NAME</label>
+            <input type="text" id="f-name" name="name" class="form-input" placeholder="Your Name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label mono" for="f-email">EMAIL</label>
+            <input type="email" id="f-email" name="email" class="form-input" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label mono" for="f-subject">SUBJECT</label>
+            <input type="text" id="f-subject" name="subject" class="form-input" placeholder="Subject" />
+          </div>
+          <div class="form-group">
+            <label class="form-label mono" for="f-msg">MESSAGE</label>
+            <textarea id="f-msg" name="message" class="form-input form-textarea" placeholder="Your message..." rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary magnetic" data-cursor-label="SEND">SEND MESSAGE →</button>
+        </form>
+      </div>
+    </div>
+    <!-- Toast -->
+    <div id="toast" class="toast">✓ Email copied to clipboard!</div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer id="footer">
+    <div class="footer-grid-overlay"></div>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">ZICO</span>
+        <span class="footer-tagline mono">BEYOND THE GAME</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#gaming">Gaming Experience</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer-social">
+        <a href="https://github.com/zicotruong1312" target="_blank" rel="noopener" class="footer-gh" data-cursor-label="OPEN">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <p class="footer-copy mono">© 2026 ZICO. All Rights Reserved.</p>
+    </div>
+    <button class="back-top" id="back-top" aria-label="Back to top" data-cursor-label="TOP">↑</button>
+  </footer>
+
+  <!-- JS Files -->
+  <script src="js/loader.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/cosmic-space.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
